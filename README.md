@@ -61,11 +61,11 @@
         .key[data-note^="D"] { background-color: #FF8000; } /* Orange */
         .key[data-note^="E"] { background-color: #FFFF00; } /* Yellow */
         .key[data-note^="F"] { background-color: #00FF00; } /* Green */
-        .key[data-note^="G"] { background-color: #0000FF; } /* Blue */
+        .key[data-note^="G"] { background-color: #008080; } /* Teal */
         .key[data-note^="A"] { background-color: #8B00FF; } /* Purple */
         .key[data-note^="B"] { background-color: #FF00FF; } /* Pink */
 
-        /* Override Black Keys to stay black regardless of note letter */
+        /* Force Black Keys to stay dark finish */
         .key.black { background-color: #222 !important; }
 
     </style>
@@ -78,7 +78,7 @@
         const pianoContainer = document.getElementById('piano');
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // Sequence from A3 to E5
+        // Range: A3 to E5
         const notes = [
             { n: 'A3', t: 'white', f: 220.00 }, { n: 'A#3', t: 'black', f: 233.08 },
             { n: 'B3', t: 'white', f: 246.94 }, { n: 'C4', t: 'white', f: 261.63 },

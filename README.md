@@ -75,7 +75,7 @@
         const pianoContainer = document.getElementById('piano');
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // Specific range: C4 to G5
+        // Specific range: C4 to E5
         const notes = [
             { n: 'C4', t: 'white', f: 261.63 }, { n: 'C#4', t: 'black', f: 277.18 },
             { n: 'D4', t: 'white', f: 293.66 }, { n: 'D#4', t: 'black', f: 311.13 },
@@ -87,8 +87,7 @@
             { n: 'C5', t: 'white', f: 523.25 }, { n: 'C#5', t: 'black', f: 554.37 },
             { n: 'D5', t: 'white', f: 587.33 }, { n: 'D#5', t: 'black', f: 622.25 },
             { n: 'E5', t: 'white', f: 659.25 },
-            { n: 'F5', t: 'white', f: 698.46 }, { n: 'F#5', t: 'black', f: 739.99 },
-            { n: 'G5', t: 'white', f: 783.99 }
+          
         ];
 
         function playNote(frequency) {

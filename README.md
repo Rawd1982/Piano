@@ -2,93 +2,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prodigies Chromacolor Piano (A3-E5)</title>
+    <title>Prodigies Chromacolor Piano</title>
     <style>
-        /* CSS - Styling the Piano */
         body {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #2c3e50;
+            background-color: #1a1a1a;
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
+            font-family: sans-serif;
         }
-
-        h1 { margin-bottom: 20px; }
 
         #piano {
             display: flex;
             position: relative;
-            background: #111;
+            background: #000;
             padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
 
         .key {
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            padding-bottom: 15px;
             user-select: none;
-            transition: transform 0.1s, box-shadow 0.1s;
+            transition: transform 0.05s, box-shadow 0.05s;
         }
 
         .key:active {
-            transform: translateY(4px);
-            box-shadow: inset 0 5px 10px rgba(0,0,0,0.3);
+            transform: translateY(2px);
+            filter: brightness(0.9);
         }
 
         /* White Key Styles */
         .white {
             width: 60px;
             height: 250px;
-            border: 1px solid #000;
-            border-radius: 0 0 5px 5px;
+            border: 1px solid rgba(0,0,0,0.2);
+            border-radius: 0 0 6px 6px;
             z-index: 1;
-            font-size: 1.2rem;
-            font-weight: bold;
         }
 
         /* Black Key Styles */
         .black {
             width: 40px;
             height: 150px;
-            background-color: #333;
+            background-color: #222;
             z-index: 2;
             margin-left: -20px;
             margin-right: -20px;
-            border-radius: 0 0 3px 3px;
-            color: #ccc;
-            font-size: 0.8rem;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* Prodigies Chromacolor Mapping for White Keys */
-        .key[data-note^="C"] { background-color: #FF0000; color: white; } /* Red */
-        .key[data-note^="D"] { background-color: #FF8000; color: white; } /* Orange */
-        .key[data-note^="E"] { background-color: #FFFF00; color: black; } /* Yellow */
-        .key[data-note^="F"] { background-color: #00FF00; color: black; } /* Green */
-        .key[data-note^="G"] { background-color: #0000FF; color: white; } /* Blue */
-        .key[data-note^="A"] { background-color: #8B00FF; color: white; } /* Purple */
-        .key[data-note^="B"] { background-color: #FF00FF; color: white; } /* Pink/Teal */
+        /* Prodigies Chromacolor Mapping */
+        .key[data-note^="C"] { background-color: #FF0000; } /* Red */
+        .key[data-note^="D"] { background-color: #FF8000; } /* Orange */
+        .key[data-note^="E"] { background-color: #FFFF00; } /* Yellow */
+        .key[data-note^="F"] { background-color: #00FF00; } /* Green */
+        .key[data-note^="G"] { background-color: #0000FF; } /* Blue */
+        .key[data-note^="A"] { background-color: #8B00FF; } /* Purple */
+        .key[data-note^="B"] { background-color: #FF00FF; } /* Pink */
+
+        /* Override Black Keys to stay black regardless of note letter */
+        .key.black { background-color: #222 !important; }
 
     </style>
 </head>
 <body>
 
-    <h1>Prodigies Piano</h1>
     <div id="piano"></div>
-    <p>Click the keys to play (A3 to E5)</p>
 
     <script>
-        // JS - Logic and Audio
         const pianoContainer = document.getElementById('piano');
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+        // Sequence from A3 to E5
         const notes = [
             { n: 'A3', t: 'white', f: 220.00 }, { n: 'A#3', t: 'black', f: 233.08 },
             { n: 'B3', t: 'white', f: 246.94 }, { n: 'C4', t: 'white', f: 261.63 },
@@ -108,31 +98,31 @@
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             
-            osc.type = 'triangle'; // Smoother sound than sine
+            osc.type = 'triangle'; 
             osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
             
-            gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.5);
 
             osc.connect(gain);
             gain.connect(audioCtx.destination);
 
             osc.start();
-            osc.stop(audioCtx.currentTime + 1);
+            osc.stop(audioCtx.currentTime + 1.5);
         }
 
         notes.forEach(note => {
             const key = document.createElement('div');
             key.className = `key ${note.t}`;
             key.dataset.note = note.n;
-            if (note.t === 'white') key.innerText = note.n;
 
-            key.addEventListener('mousedown', () => playNote(note.f));
-            // Add touch support for mobile
-            key.addEventListener('touchstart', (e) => {
+            const handlePress = (e) => {
                 e.preventDefault();
                 playNote(note.f);
-            });
+            };
+
+            key.addEventListener('mousedown', handlePress);
+            key.addEventListener('touchstart', handlePress);
 
             pianoContainer.appendChild(key);
         });

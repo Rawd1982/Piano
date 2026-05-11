@@ -69,7 +69,7 @@
 </head>
 <body>
 
-   
+    <div id="piano"></div>
 
     <script>
         const pianoContainer = document.getElementById('piano');
